@@ -1,0 +1,42 @@
+@startuml architecture
+
+' Defined packages
+package "Web Project" <<Application>> {    
+    [Common]
+    [Data]
+    [Services]
+    [Business]
+    [Web]
+}
+
+package "Web" <<Layer>> {
+    [Controllers]
+    [Views]
+    [Models]
+}
+
+package "Business" <<Layer>> {
+    [Business Logic]
+}
+
+package "Data" <<Layer>> {
+    [Repositories]    
+    [Context]
+}
+
+package "Common" <<Layer>> {
+    [DTOs]
+}
+
+package "Services" <<Layer>> {
+    [Email]
+    [OUD]
+}
+
+' Dependency between packages
+Web --> Business : uses
+Web --> Services : uses
+Business --> Data : uses
+Services --> Data : uses
+
+@enduml
