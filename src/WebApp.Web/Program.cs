@@ -1,4 +1,9 @@
+using WebApp.Web.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services registration
+builder.Services.AddApplicationServices(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -19,6 +24,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "MyArea",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
