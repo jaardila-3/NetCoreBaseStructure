@@ -481,3 +481,7 @@ $RECYCLE.BIN/
 
 # macOS metadata files
 .DS_Store
+
+# Logs folder
+[Ll]og/
+[Ll]ogs/
