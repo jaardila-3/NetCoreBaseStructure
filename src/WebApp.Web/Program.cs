@@ -1,4 +1,8 @@
+using DotNetEnv;
 using WebApp.Web.DependencyInjection;
+
+// Load environment variables from .env file
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 

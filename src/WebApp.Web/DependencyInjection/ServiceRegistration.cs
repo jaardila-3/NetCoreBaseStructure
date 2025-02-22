@@ -13,7 +13,6 @@ public static class ServiceRegistration
         services.AddDbContext<WebAppDbContext>(options =>
             options.UseOracle(configuration.GetConnectionString("DefaultConnection")));
 
-
         //configure DI for repositories and UnitOfWork (Data Layer)
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();

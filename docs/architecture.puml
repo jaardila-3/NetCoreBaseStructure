@@ -2,41 +2,50 @@
 
 ' Defined packages
 package "Web Project" <<Application>> {    
-    [Common]
-    [Data]
-    [Services]
-    [Business]
-    [Web]
+    [WebApp.Common]
+    [WebApp.Data]
+    [WebApp.Services]
+    [WebApp.Business]
+    [WebApp.Web]
 }
 
-package "Web" <<Layer>> {
+package "WebApp.Web" <<Layer>> {
     [Controllers]
     [Views]
     [Models]
+    [Areas]
+    [DependencyInjection]
 }
 
-package "Business" <<Layer>> {
-    [Business Logic]
+package "WebApp.Business" <<Layer>> {
+    [Services]
+    [Interfaces]
 }
 
-package "Data" <<Layer>> {
-    [Repositories]    
+package "WebApp.Data" <<Layer>> {
+    [Repositories]  
+    [Unit of Work]  
     [Context]
 }
 
-package "Common" <<Layer>> {
+package "WebApp.Common" <<Layer>> {
     [DTOs]
+    [Constants]
+    [Extensions]
+    [Helpers]
+    [Models]
 }
 
-package "Services" <<Layer>> {
-    [Email]
-    [OUD]
+package "WebApp.Services" <<Layer>> {
+    [Interfaces]
+    [Implementations]
+    [Email Service]
 }
 
 ' Dependency between packages
-Web --> Business : uses
-Web --> Services : uses
-Business --> Data : uses
-Services --> Data : uses
+WebApp.Web --> WebApp.Business : uses
+WebApp.Web --> WebApp.Services : uses
+WebApp.Business --> WebApp.Data : uses
+WebApp.Services --> WebApp.Data : uses
 
 @enduml
