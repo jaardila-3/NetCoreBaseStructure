@@ -8,14 +8,7 @@ Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure serilog
-builder.Host.UseSerilog((context, config) =>
-{
-    config.MinimumLevel.Error()
-          .WriteTo.Console() // Logs in console
-          .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day, // Logs file with daily rotation
-            outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}", // Logs with format
-            retainedFileCountLimit: 15); // Keep only 15 log files
-});
+builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 
 // Add services registration
 builder.Services.AddApplicationServices(builder.Configuration);
