@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Localization;
 using Serilog;
 using System.Globalization;
 using WebApp.Web.DependencyInjection;
+using WebApp.Web.Middlewares;
 
 // Load environment variables from .env file
 Env.Load();
@@ -22,6 +23,17 @@ var localizationOptions = new RequestLocalizationOptions
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add configuration session
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// configure the application routes to use lowercase urls
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
 // Configure serilog
 builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 
@@ -40,6 +52,11 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+// Configure session (must be before routing and middleware that uses it)
+app.UseSession();
+
+// Configure the middleware to handle global exceptions
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 // Configure localization
 app.UseRequestLocalization(localizationOptions);

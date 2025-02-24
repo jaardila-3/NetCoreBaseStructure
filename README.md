@@ -17,17 +17,22 @@ This template includes:
 - **Generic Repository Pattern**: Abstract data access with reusable `IRepository<T>` and concrete `Repository<T>` implementations.
 - **Unit of Work Pattern**: Manages transactions and coordinates multiple repositories via `IUnitOfWork`.
 
-### Technologies:
-- ASP.NET Core 8.0 (MVC).
-- Entity Framework Core 8.0 with Oracle support via Oracle.EntityFrameworkCore.
-- Oracle Database as the data store.
-- DotNetEnv for managing environment variables (e.g., connection strings).
+### Technologies and Dependencies:
+- **Framework**: ASP.NET Core 8.0 for the MVC presentation layer.
+- **Data Access**: Entity Framework Core 8.0 with `Oracle.EntityFrameworkCore` for Oracle Database integration.
+- **Database**: Oracle Database (e.g., Oracle Express Edition 21c or higher), requiring `Oracle.ManagedDataAccess.Core`.
+- **Environment Management**: `DotNetEnv` for loading environment variables (e.g., Oracle connection strings) from a `.env` file in development.
+- **Logging**: `Serilog` for structured logging, configurable to write to files or Oracle Database.
+- **Validation**: `FluentValidation` for complex business and data validations, integrated into `WebApp.Common`.
+- **Localization**: Configured for Spanish (Colombia, "es-CO") culture, handling decimal separators (comma) and date formats.
 
 ### Best Practices:
-- Dependency Injection for loose coupling.
-- Unit and Integration testing support.
-- Clean folder structure and naming conventions.
-- Remember to remove HTTP headers that may expose sensitive information about your ASP.NET Core 8 application, such as `Server` and `X-Powered-By`. 
+- **Dependency Injection**: Uses ASP.NET Core’s built-in DI for loose coupling across layers.
+- **Exception Handling**: Implements a global exception handler using UseExceptionHandler or custom middleware, with error pages (`Error.cshtml`) and session-based error messaging.
+- **Logging**: Centralizes error and activity logging with Serilog, configurable for files.
+- **Testing**: Supports unit and integration testing in `WebApp.UnitTests` and `WebApp.IntegrationTests`, with mockable repositories and services.
+- **Folder Structure**: Maintains a clean, modular structure with dedicated folders for middlewares, validators, exceptions, and models.
+- **Note**: Remember to remove HTTP headers that may expose sensitive information about your ASP.NET Core 8 application, such as `Server` and `X-Powered-By`. 
 
 ### Prerequisites:
 Before cloning and running this project, ensure you have the following installed:
