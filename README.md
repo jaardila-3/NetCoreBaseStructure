@@ -29,7 +29,7 @@ This template includes:
 ### Best Practices:
 - **Dependency Injection**: Uses ASP.NET Core’s built-in DI for loose coupling across layers.
 - **Exception Handling**: Implements a global exception handler using UseExceptionHandler or custom middleware, with error pages (`Error.cshtml`) and session-based error messaging.
-- **Logging**: Centralizes error and activity logging with Serilog, configurable for files.
+- **Logging**: Centralizes error and activity logging with Serilog, configurable for files and Oracle Database storage.
 - **Testing**: Supports unit and integration testing in `WebApp.UnitTests` and `WebApp.IntegrationTests`, with mockable repositories and services.
 - **Folder Structure**: Maintains a clean, modular structure with dedicated folders for middlewares, validators, exceptions, and models.
 - **Note**: Remember to remove HTTP headers that may expose sensitive information about your ASP.NET Core 8 application, such as `Server` and `X-Powered-By`. 
