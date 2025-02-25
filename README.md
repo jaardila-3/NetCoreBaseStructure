@@ -1,9 +1,12 @@
-# NetCoreBaseStructure
+# NetCoreBaseStructure - Account Management Branch
 
-A foundational structure for building .NET Core projects, designed with a scalable five-layer architecture to ensure maintainability and best practices. This repository provides a starting point for .NET Core applications using ASP.NET Core MVC, Entity Framework Core with Oracle Database in a Code First approach, and modern design patterns like the Generic Repository and Unit of Work. It also incorporates DotNetEnv for environment variable management, making it ideal for development environments.
+This branch (`feature/account-management`) extends the foundational structure for building .NET Core projects by implementing a custom user management system. It includes authentication, authorization, and role management using a scalable five-layer architecture, ASP.NET Core MVC with areas, Entity Framework Core with Oracle Database in a Code First approach, and modern design patterns like the Generic Repository and Unit of Work.
 
 ## Overview
-This template includes:
+This branch introduces:
+- Custom user management with tables `Users`, `Roles`, and `UserRoles`.
+- Authentication and authorization using cookie-based authentication configured in `Program.cs`.
+- Account management functionality in the `Account` area, including login, registration, and logout.
 
 ## Five-Layer Architecture:
 
@@ -18,7 +21,7 @@ This template includes:
 - **Unit of Work Pattern**: Manages transactions and coordinates multiple repositories via `IUnitOfWork`.
 
 ### Technologies and Dependencies:
-- **Framework**: ASP.NET Core 8.0 for the MVC presentation layer.
+- **Framework**: ASP.NET Core 8.0 with cookie-based authentication.
 - **Data Access**: Entity Framework Core 8.0 with `Oracle.EntityFrameworkCore` for Oracle Database integration, using a Code First workflow for database schema creation.
 - **Database**: Oracle Database (e.g., Oracle Express Edition 21c or higher), requiring `Oracle.ManagedDataAccess.Core`.
 - **Environment Management**: `DotNetEnv` for loading environment variables (e.g., Oracle connection strings) from a `.env` file in development.
@@ -32,6 +35,7 @@ This template includes:
 - **Logging**: Centralizes error and activity logging with Serilog, configurable for files and Oracle Database storage.
 - **Testing**: Supports unit and integration testing in `WebApp.UnitTests` and `WebApp.IntegrationTests`, with mockable repositories and services.
 - **Folder Structure**: Maintains a clean, modular structure with dedicated folders for middlewares, validators, exceptions, and models.
+- **Security**: Custom password hashing and role-based authorization.
 - **Note**: Remember to remove HTTP headers that may expose sensitive information about your ASP.NET Core 8 application, such as `Server` and `X-Powered-By`. 
 
 ### Prerequisites:
@@ -48,21 +52,18 @@ Perfect for developers seeking a solid starting point for .NET Core applications
 
 **Getting Started**:
 1. Clone this repository: `git clone https://github.com/jaardila-3/NetCoreBaseStructure.git`
-2. Open the solution in Visual Studio or Rider.
-3. Run `dotnet restore`.
-4. Install the EF Core tools globally (if not already installed): `dotnet tool install --global dotnet-ef`
-5. Install Oracle-specific packages in WebApp.Data: `Oracle.EntityFrameworkCore` and `Oracle.ManagedDataAccess.Core`
-6. Create a .env file in the root of the project, based in `example.env`.
-7. Run Migrations for Oracle (from the root of the project, not within individual layers):
+2. git checkout `feature/account-management`.
+3. Open the solution in Visual Studio or Rider.
+4. Run `dotnet restore`.
+5. Install the EF Core tools globally (if not already installed): `dotnet tool install --global dotnet-ef`
+6. Install Oracle-specific packages in WebApp.Data: `Oracle.EntityFrameworkCore` and `Oracle.ManagedDataAccess.Core`
+7. Create a .env file in the root of the project, based in `example.env`.
+8. Run Migrations for Oracle (from the root of the project, not within individual layers):
 - To create a new migration:
      ```bash
      dotnet ef migrations add InitialMigration -s src/WebApp.Web/ -p src/WebApp.Data/
      ```
-- To apply migrations and update the database:
-    ```bash
-     dotnet ef database update -s src/WebApp.Web/ -p src/WebApp.Data/
-     ```
-8. Build and run the project to explore the structure.
+9. Build and run the project to explore the structure and apply migrations and update the database.
 
 Feel free to contribute, `fork`, or adapt this structure for your own .NET Core projects!
 

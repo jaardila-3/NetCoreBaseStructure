@@ -19,9 +19,18 @@ public class AccountController : Controller
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public IActionResult Login()
     {
-        return View("Error!");
+        return View();
+    }
+
+    public IActionResult Register()
+    {
+        return View();
+    }
+
+    public IActionResult AccessDenied()
+    {
+        return View();
     }
 }
