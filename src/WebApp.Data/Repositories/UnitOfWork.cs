@@ -3,12 +3,11 @@ using WebApp.Data.Context;
 using WebApp.Data.Interfaces;
 
 namespace WebApp.Data.Repositories;
-public class UnitOfWork: IUnitOfWork
+public class UnitOfWork(WebAppDbContext context) : IUnitOfWork
 {
     private Hashtable? _repositories;
-    private readonly WebAppDbContext _context;
-
-    public UnitOfWork(WebAppDbContext context) => _context = context;
+    private readonly WebAppDbContext _context = context;
+    private bool _disposed;
 
     public IRepository<T> Repository<T>() where T : class
     {
@@ -37,5 +36,21 @@ public class UnitOfWork: IUnitOfWork
         }
     }
 
-    public void Dispose() => _context.Dispose();
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            _disposed = true;
+        }
+    }
 }
