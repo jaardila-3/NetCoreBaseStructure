@@ -10,6 +10,12 @@ public class OracleLoggerException(IUnitOfWork unitOfWork): ILoggerException
 
     public async Task CreateLogErrorAsync(string message, string exception, string? details = null)
     {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            Console.WriteLine("Intento de guardar un log con mensaje nulo o vacío.");
+            return;
+        }
+
         try
         {
             await _unitOfWork.Repository<Log>().AddAsync(new Log
