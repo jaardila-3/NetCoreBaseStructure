@@ -1,3 +1,4 @@
+using WebApp.Business.Interfaces;
 using WebApp.Common.Exceptions;
 
 namespace WebApp.Web.Middlewares;
@@ -5,10 +6,11 @@ namespace WebApp.Web.Middlewares;
 /// <summary>
 /// Middleware to handle global exceptions in a structured and extensible way.
 /// </summary>
-public class GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
+public class GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger, IServiceProvider serviceProvider)
 {
     private readonly RequestDelegate _next = next;
     private readonly ILogger<GlobalExceptionMiddleware> _logger = logger;
+    private readonly IServiceProvider _serviceProvider = serviceProvider;
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -19,6 +21,17 @@ public class GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExcep
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ha ocurrido un error inesperado: {Message}", ex.Message);
+            
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var loggerException = scope.ServiceProvider.GetRequiredService<ILoggerException>();
+                await loggerException.CreateLogErrorAsync(
+                    message: "Ha ocurrido un error inesperado.",
+                    exception: ex.ToString(),
+                    details: $"{context.Request.Path} {context.Request.QueryString}"
+                );
+            }
+
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -28,7 +41,7 @@ public class GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExcep
         var (statusCode, errorMessage) = GetExceptionDetails(exception);
 
         var errorPath = "/Home/Error";
-        
+
         context.Session?.SetString("ErrorMessage", errorMessage);
         context.Session?.SetInt32("ErrorStatusCode", statusCode);
         context.Response.Redirect(errorPath);

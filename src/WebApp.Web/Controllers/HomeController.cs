@@ -15,6 +15,7 @@ public class HomeController(ILogger<HomeController> logger) : Controller
 
     public IActionResult Privacy()
     {
+        throw new InvalidOperationException("This is a test exception");
         return View();
     }
 

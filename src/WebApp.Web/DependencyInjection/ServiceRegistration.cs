@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using WebApp.Business.BusinessServices.LoggerException;
+using WebApp.Business.Interfaces;
 using WebApp.Data.Context;
 using WebApp.Data.Interfaces;
 using WebApp.Data.Repositories;
@@ -16,6 +18,9 @@ public static class ServiceRegistration
         //configure DI for repositories and UnitOfWork (Data Layer)
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        //configure DI for LoggerException (Business Layer)
+        services.AddScoped<ILoggerException, OracleLoggerException>();
 
         return services;
     }
