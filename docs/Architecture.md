@@ -18,3 +18,42 @@ This document describes the architecture of the NetCoreBaseStructure project, a 
 - Entity Framework Core 8.0 with Oracle support via Oracle.EntityFrameworkCore
 - Oracle Database as the data store
 - DotNetEnv for managing environment variables (e.g., connection strings)
+
+## Diagram
+
+```mermaid
+graph TD;
+    
+    subgraph "1️⃣ Web Layer"
+        B[WebApp.Web]
+    end
+
+    subgraph "2️⃣ Business Layer"
+        C[WebApp.Business]
+    end
+
+    subgraph "3️⃣ Data Layer"
+        D[WebApp.Data]
+    end
+
+    subgraph "4️⃣ Common Layer"
+        E[WebApp.Common]
+    end
+
+    subgraph "5️⃣ Services Layer"
+        F[WebApp.Services]
+    end
+
+    subgraph "🗄️ Database"
+        G[(Oracle Database)]
+    end
+
+    %% Relación entre capas
+    B -->|Uses| C;
+    B -->|Uses| F;
+    C -->|Uses| D;
+    C -->|Uses Shared Utilities| E;
+    F -->|Uses| D;
+    D -->|Accesses| G;
+
+```

@@ -41,6 +41,7 @@ Before cloning and running this project, ensure you have the following installed
 - Oracle Database (e.g., Oracle Express Edition 21c or higher).
 - Oracle Managed Data Access Core for .NET (installed via NuGet).
 - Graphviz (optional, for rendering PlantUML diagrams).
+- Mermaid (optional, required only if you want to render architecture diagrams from `architecture.md`).
 - A code editor like Visual Studio, Visual Studio Code, or Rider.
 
 Perfect for developers seeking a solid starting point for .NET Core applications, with built-in support for unit and integration testing, documentation, and a professional folder structure. Includes a `README.md`, `.gitignore`, and ready-to-use setup.

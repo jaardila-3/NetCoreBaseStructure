@@ -21,9 +21,9 @@ public class OracleLoggerException(IUnitOfWork unitOfWork): ILoggerException
                 Properties = details
             });
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // ignored            
+            Console.WriteLine($"Error al registrar log en la base de datos. {ex.Message}");       
         }
     }
 }
