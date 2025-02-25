@@ -1,6 +1,6 @@
 # NetCoreBaseStructure
 
-A foundational structure for building .NET Core projects, designed with a scalable five-layer architecture to ensure maintainability and best practices. This repository provides a starting point for .NET Core applications using ASP.NET Core MVC, Entity Framework Core with Oracle Database, and modern design patterns like the Generic Repository and Unit of Work. It also incorporates DotNetEnv for environment variable management, making it ideal for development environments.
+A foundational structure for building .NET Core projects, designed with a scalable five-layer architecture to ensure maintainability and best practices. This repository provides a starting point for .NET Core applications using ASP.NET Core MVC, Entity Framework Core with Oracle Database in a Code First approach, and modern design patterns like the Generic Repository and Unit of Work. It also incorporates DotNetEnv for environment variable management, making it ideal for development environments.
 
 ## Overview
 This template includes:
@@ -19,7 +19,7 @@ This template includes:
 
 ### Technologies and Dependencies:
 - **Framework**: ASP.NET Core 8.0 for the MVC presentation layer.
-- **Data Access**: Entity Framework Core 8.0 with `Oracle.EntityFrameworkCore` for Oracle Database integration.
+- **Data Access**: Entity Framework Core 8.0 with `Oracle.EntityFrameworkCore` for Oracle Database integration, using a Code First workflow for database schema creation.
 - **Database**: Oracle Database (e.g., Oracle Express Edition 21c or higher), requiring `Oracle.ManagedDataAccess.Core`.
 - **Environment Management**: `DotNetEnv` for loading environment variables (e.g., Oracle connection strings) from a `.env` file in development.
 - **Logging**: `Serilog` for structured logging, configurable to write to files or Oracle Database.
@@ -53,7 +53,15 @@ Perfect for developers seeking a solid starting point for .NET Core applications
 4. Install the EF Core tools globally (if not already installed): `dotnet tool install --global dotnet-ef`
 5. Install Oracle-specific packages in WebApp.Data: `Oracle.EntityFrameworkCore` and `Oracle.ManagedDataAccess.Core`
 6. Create a .env file in the root of the project, based in `example.env`.
-7. Run Migrations for Oracle.
+7. Run Migrations for Oracle (from the root of the project, not within individual layers):
+- To create a new migration:
+     ```bash
+     dotnet ef migrations add InitialMigration -s src/WebApp.Web/ -p src/WebApp.Data/
+     ```
+- To apply migrations and update the database:
+    ```bash
+     dotnet ef database update -s src/WebApp.Web/ -p src/WebApp.Data/
+     ```
 8. Build and run the project to explore the structure.
 
 Feel free to contribute, `fork`, or adapt this structure for your own .NET Core projects!

@@ -485,3 +485,6 @@ $RECYCLE.BIN/
 # Logs folder
 [Ll]og/
 [Ll]ogs/
+
+# TestResults folder
+[Tt]est[Rr]esults/
