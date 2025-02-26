@@ -1,34 +1,29 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WebApp.Common.Configurations;
 using WebApp.Common.Constants;
 using WebApp.Common.Interfaces;
-using WebApp.Data.Context;
 using WebApp.Data.Interfaces;
 using WebApp.Data.Models.Entities;
 
 namespace WebApp.Data.Initialization;
 
-public class DatabaseInitializer(IUnitOfWork unitOfWork, WebAppDbContext context, IOptions<AdminSettings> adminSettings, ILogger<DatabaseInitializer> logger, IPasswordHasher passwordHasher)
+public class DatabaseInitializer(
+    IUnitOfWork unitOfWork,
+    IOptions<AdminSettings> adminSettings,
+    ILogger<DatabaseInitializer> logger,
+    IPasswordHasher passwordHasher
+    )
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    private readonly WebAppDbContext _context = context;
     private readonly AdminSettings _adminSettings = adminSettings.Value;
     private readonly ILogger<DatabaseInitializer> _logger = logger;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
 
-    public async Task InitializeAsync(bool migrateDatabase)
+    public async Task SeedAsync()
     {
         try
         {
-            if (migrateDatabase)
-            {
-                _logger.LogInformation("Iniciando migración de la base de datos...");
-                await _context.Database.MigrateAsync();
-                _logger.LogInformation("Migración completada.");
-            }
-
             await SeedRolesAsync();
             await SeedAdminUserAsync();
         }
@@ -65,14 +60,13 @@ public class DatabaseInitializer(IUnitOfWork unitOfWork, WebAppDbContext context
         {
             adminUser = new User
             {
+                Email = _adminSettings.Email,
+                PasswordHash = _passwordHasher.Hash(_adminSettings.Password),
                 Name = _adminSettings.Name,
                 LastName = _adminSettings.LastName,
                 IdentificationNumber = _adminSettings.IdentificationNumber,
                 Username = _adminSettings.Username,
-                Email = _adminSettings.Email,
-                PasswordHash = _passwordHasher.Hash(_adminSettings.Password),
-                CreatedAt = DateTime.Now,
-                CreatedBy = "System"
+                Dependency = _adminSettings.Dependency
             };
 
             await _unitOfWork.Repository<User>().AddAsync(adminUser);
@@ -84,8 +78,6 @@ public class DatabaseInitializer(IUnitOfWork unitOfWork, WebAppDbContext context
                 {
                     UserId = adminUser.Id,
                     RoleId = adminRole.Id,
-                    CreatedAt = DateTime.Now,
-                    CreatedBy = "System"
                 };
                 await _unitOfWork.Repository<UserRole>().AddAsync(userRole);
                 _logger.LogInformation($"Usuario administrador creado y asignado al rol {Roles.ADMIN}.");

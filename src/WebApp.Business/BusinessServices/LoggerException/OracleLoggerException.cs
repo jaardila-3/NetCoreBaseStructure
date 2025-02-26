@@ -1,4 +1,5 @@
 using WebApp.Business.Interfaces;
+using WebApp.Common.Constants;
 using WebApp.Data.Interfaces;
 using WebApp.Data.Models.Entities;
 
@@ -21,7 +22,7 @@ public class OracleLoggerException(IUnitOfWork unitOfWork): ILoggerException
             await _unitOfWork.Repository<Log>().AddAsync(new Log
             {
                 Timestamp = DateTime.Now,
-                Level = "Error",
+                Level = GlobalConstants.ERROR,
                 Message = message,
                 Exception = exception,
                 Properties = details

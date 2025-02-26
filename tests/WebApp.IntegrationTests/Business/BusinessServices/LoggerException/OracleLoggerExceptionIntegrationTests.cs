@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WebApp.Business.Interfaces;
+using WebApp.Common.Constants;
 using WebApp.Data.Context;
 using WebApp.Data.Models.Entities;
 using WebApp.IntegrationTests.Fixtures;
@@ -38,7 +39,7 @@ public class OracleLoggerExceptionIntegrationTests : IClassFixture<DatabaseFixtu
         // Assert
         var logEntry = await dbContext.Set<Log>().FirstOrDefaultAsync(l => l.Message == message);
         Assert.NotNull(logEntry);
-        Assert.Equal("Error", logEntry.Level);
+        Assert.Equal(GlobalConstants.ERROR, logEntry.Level);
         Assert.Equal(exception, logEntry.Exception);
         Assert.Equal(details, logEntry.Properties);
     }

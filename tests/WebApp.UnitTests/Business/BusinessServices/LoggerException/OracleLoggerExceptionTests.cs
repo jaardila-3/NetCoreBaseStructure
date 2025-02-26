@@ -1,5 +1,6 @@
 using Moq;
 using WebApp.Business.BusinessServices.LoggerException;
+using WebApp.Common.Constants;
 using WebApp.Data.Interfaces;
 using WebApp.Data.Models.Entities;
 
@@ -76,7 +77,7 @@ public class OracleLoggerExceptionTests
 
         // Assert
         Assert.NotNull(capturedLog);
-        Assert.Equal("Error", capturedLog.Level);
+        Assert.Equal(GlobalConstants.ERROR, capturedLog.Level);
         Assert.Equal(message, capturedLog.Message);
         Assert.Equal(exception, capturedLog.Exception);
         Assert.Equal(details, capturedLog.Properties);

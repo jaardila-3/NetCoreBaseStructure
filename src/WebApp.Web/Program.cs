@@ -2,7 +2,7 @@ using DotNetEnv;
 using Microsoft.AspNetCore.Localization;
 using Serilog;
 using System.Globalization;
-using WebApp.Data.Initialization;
+using WebApp.Data.Extensions;
 using WebApp.Web.DependencyInjection;
 using WebApp.Web.Middlewares;
 
@@ -59,6 +59,9 @@ app.UseSession();
 // Configure the middleware to handle global exceptions
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
+// Execute database initialization and seed data
+await app.Services.InitializeDatabaseAsync();
+
 // Configure localization
 app.UseRequestLocalization(localizationOptions);
 
@@ -76,24 +79,5 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-// Execute database initialization and seed data
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var initializer = services.GetRequiredService<DatabaseInitializer>();
-    var logger = services.GetRequiredService<ILogger<Program>>();
-
-    try
-    {
-        bool migrateDatabase = Env.GetBool("MigrateAtStartup");
-        await initializer.InitializeAsync(migrateDatabase);
-        logger.LogInformation("Inicialización de la base de datos completada.");
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, "Error al inicializar la base de datos.");
-    }
-}
 
 app.Run();
