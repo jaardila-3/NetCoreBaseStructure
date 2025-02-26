@@ -12,8 +12,8 @@ public class WebAppDbContext(DbContextOptions<WebAppDbContext> options) : DbCont
 
         // Converter for Ulid
         var ulidConverter = new ValueConverter<Ulid, string>(
-            v => v.ToString(),
-            v => Ulid.Parse(v));
+            v => v.ToString(), // Ulid to string
+            v => Ulid.Parse(v)); // string to Ulid
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {

@@ -24,7 +24,7 @@ public class UnitOfWork(WebAppDbContext context) : IUnitOfWork
         return (IRepository<T>)_repositories[keyName]!;
     }
 
-    public async Task<int> SaveChangesAsync()
+    public async Task<int> CommitAsync()
     {
         try
         {
